@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # Arka uç API'nizin adresi
-API_URL = "https://hello-cloud4.onrender.com"
+API_URL = "https://eren-cloud.onrender.com"
 
 # Tüm HTML içeriği bir değişkende
 HTML = """
