@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Arka uç API'nizin adresi
 API_URL = "https://eren-cloud.onrender.com"
 
-# HTML GÜNCELLENDİ: Sadece CSS (stil) kısmı değişti.
+# HTML GÜNCELLENDİ: CSS stilleri listeyi alt alta gösterecek şekilde düzeltildi.
 HTML = """
 <!doctype html>
 <html>
@@ -27,12 +27,13 @@ HTML = """
         /* --- DEĞİŞİKLİK BURADA --- */
         li { 
             background: white; 
-            margin: 5px; /* Öğeler arası boşluk */
+            margin: 5px auto; /* Öğeler arası boşluk ve yatayda ortalama */
             padding: 8px 12px; /* İç boşluk */
             border-radius: 5px; 
             list-style-type: none; 
-            display: inline-block; /* Öğeleri yan yana dizler */
-            width: auto; /* Genişliği içeriğe göre ayarlar */
+            /* display: inline-block; KODU KALDIRILDI. */
+            /* Artık liste elemanları varsayılan olarak alt alta (block) dizilecek */
+            width: 250px; /* Daha düzgün bir görünüm için genişlik eklendi */
             box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Hafif gölge */
         }
     </style>
@@ -62,7 +63,7 @@ HTML = """
 </html>
 """
 
-# @app.route VE index() FONKSİYONU TAMAMEN AYNI KALDI
+# @app.route VE index() FONKSİYONU GÜNCELLENDİ
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Eğer kullanıcı form gönderdiyse (POST)
@@ -71,17 +72,14 @@ def index():
         veri1 = request.form.get("veri1")
         veri2 = request.form.get("veri2")
         
-        # YENİ MANTIK:
-        # Arka uca "isim" olarak iki ayrı istek gönderiyoruz.
-        # Böylece listeye iki ayrı satır olarak eklenecekler.
+        # YENİ MANTIK (İsteğiniz üzerine):
+        # İki veriyi " - " (tire) ile birleştiriyoruz.
+        birlesik_isim = f"{veri1} - {veri2}"
         
-        # 1. isteği (veri1) gönder
-        if veri1:
-            requests.post(API_URL + "/ziiyaretciler", json={"isim": veri1})
-            
-        # 2. isteği (veri2) gönder
-        if veri2:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": veri2})
+        # Arka uca "isim" olarak tek bir birleşik istek gönderiyoruz.
+        # (Ayrıca /ziiyaretciler adresindeki yazım hatası düzeltildi)
+        if veri1 and veri2: # HTML'de 'required' olduğu için ikisi de dolu gelecektir
+            requests.post(API_URL + "/ziyaretciler", json={"isim": birlesik_isim})
         
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
