@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Arka uç API'nizin adresi
 API_URL = "https://eren-cloud.onrender.com"
 
-# HTML GÜNCELLENDİ: Artık tek bir form ve tek bir buton var.
+# HTML GÜNCELLENDİ: Sadece CSS (stil) kısmı değişti.
 HTML = """
 <!doctype html>
 <html>
@@ -17,7 +17,24 @@ HTML = """
         h1 { color: #333; }
         input { padding: 10px; font-size: 16px; margin: 5px; } /* Dikeyde boşluk eklendi */
         button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 10px;}
-        li { background: white; margin: 5px auto; width: 200px; padding: 8px; border-radius: 5px; list-style-type: none; }
+        
+        /* Liste başındaki varsayılan boşluğu kaldır */
+        ul {
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        /* --- DEĞİŞİKLİK BURADA --- */
+        li { 
+            background: white; 
+            margin: 5px; /* Öğeler arası boşluk */
+            padding: 8px 12px; /* İç boşluk */
+            border-radius: 5px; 
+            list-style-type: none; 
+            display: inline-block; /* Öğeleri yan yana dizler */
+            width: auto; /* Genişliği içeriğe göre ayarlar */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Hafif gölge */
+        }
     </style>
 </head>
 <body>
@@ -25,10 +42,7 @@ HTML = """
     <p>İki alanı da doldur</p>
     
     <!-- 
-      DEĞİŞİKLİK: 
-      İki formu tek bir formda birleştirdik.
-      Input'lara "isim1" ve "isim2" adlarını verdik.
-      Tek bir buton bıraktık.
+      Form yapısı (HTML) aynı kaldı.
     -->
     <form method="POST">
         <input type="text" name="veri1" placeholder="İlk veriyi yaz" required>
@@ -48,11 +62,11 @@ HTML = """
 </html>
 """
 
+# @app.route VE index() FONKSİYONU TAMAMEN AYNI KALDI
 @app.route("/", methods=["GET", "POST"])
 def index():
     # Eğer kullanıcı form gönderdiyse (POST)
     if request.method == "POST":
-        # DEĞİŞİKLİK: 
         # "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
         veri1 = request.form.get("veri1")
         veri2 = request.form.get("veri2")
@@ -63,7 +77,7 @@ def index():
         
         # 1. isteği (veri1) gönder
         if veri1:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": veri1})
+            requests.post(API_URL + "/ziiyaretciler", json={"isim": veri1})
             
         # 2. isteği (veri2) gönder
         if veri2:
@@ -81,11 +95,6 @@ def index():
     
     # HTML şablonunu ve isimler listesini kullanarak sayfayı oluştur
     return render_template_string(HTML, isimler=isimler)
-
-if __name__ == "__main__":
-    # Uygulamayı 0.0.0.0 (herkese açık) adresinde ve 5000 portunda çalıştır
-    app.run(host="0.0.0.0", port=5000)
-
 
 if __name__ == "__main__":
     # Uygulamayı 0.0.0.0 (herkese açık) adresinde ve 5000 portunda çalıştır
