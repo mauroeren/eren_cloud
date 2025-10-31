@@ -31,9 +31,9 @@ HTML = """
       Tek bir buton bıraktık.
     -->
     <form method="POST">
-        <input type="text" name="veri1" placeholder="İsminizi Yazın" required>
+        <input type="text" name="veri1" placeholder="İsmizini Yazınız" required>
         <br>
-        <input type="text" name="veri2" placeholder="Şehrinizi Yazın" required>
+        <input type="text" name="veri2" placeholder="Şehrinizi Yazınız" required>
         <br>
         <button type="submit">Gönder</button>
     </form>
