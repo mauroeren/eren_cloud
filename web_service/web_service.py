@@ -53,17 +53,21 @@ def index():
     # Eğer kullanıcı form gönderdiyse (POST)
     if request.method == "POST":
         # DEĞİŞİKLİK: 
-        # Artık "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
+        # "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
         veri1 = request.form.get("veri1")
         veri2 = request.form.get("veri2")
         
-        # Arka uç (API) sadece "isim" adında tek bir veri kabul ettiği için,
-        # bu iki veriyi birleştirip tek bir metin olarak gönderiyoruz.
-        # Örnek: "Eren" ve "Merhaba" -> "Eren - Merhaba"
-        birlesik_isim = f"{veri1} - {veri2}"
+        # YENİ MANTIK:
+        # Arka uca "isim" olarak iki ayrı istek gönderiyoruz.
+        # Böylece listeye iki ayrı satır olarak eklenecekler.
         
-        # API'nin /ziyaretciler endpoint'ine birleşik veriyi "isim" olarak gönder
-        requests.post(API_URL + "/ziyaretciler", json={"isim": birlesik_isim})
+        # 1. isteği (veri1) gönder
+        if veri1:
+            requests.post(API_URL + "/ziyaretciler", json={"isim": veri1})
+            
+        # 2. isteği (veri2) gönder
+        if veri2:
+            requests.post(API_URL + "/ziyaretciler", json={"isim": veri2})
         
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
