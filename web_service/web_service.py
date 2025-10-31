@@ -46,9 +46,9 @@ HTML = """
       Form yapısı (HTML) aynı kaldı.
     -->
     <form method="POST">
-        <input type="text" name="veri1" placeholder="İlk veriyi yaz" required>
+        <input type="text" name="veri1" placeholder="İsim Yazınız" required>
         <br>
-        <input type="text" name="veri2" placeholder="İkinci veriyi yaz" required>
+        <input type="text" name="veri2" placeholder="Şehriniz" required>
         <br>
         <button type="submit">Gönder</button>
     </form>
