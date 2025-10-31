@@ -31,9 +31,9 @@ HTML = """
       Tek bir buton bıraktık.
     -->
     <form method="POST">
-        <input type="text" name="veri1" placeholder="İsmizini Yazınız" required>
+        <input type="text" name="isim1" placeholder="İsmizi Yazınız" required>
         <br>
-        <input type="text" name="veri2" placeholder="Şehrinizi Yazınız" required>
+        <input type="text" name="isim2" placeholder="Şehrinizi Yazınız" required>
         <br>
         <button type="submit">Gönder</button>
     </form>
@@ -54,8 +54,8 @@ def index():
     if request.method == "POST":
         # DEĞİŞİKLİK: 
         # "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
-        veri1 = request.form.get("veri1")
-        veri2 = request.form.get("veri2")
+        veri1 = request.form.get("isim1")
+        veri2 = request.form.get("isim2")
         
         # YENİ MANTIK:
         # Arka uca "isim" olarak iki ayrı istek gönderiyoruz.
@@ -63,11 +63,11 @@ def index():
         
         # 1. isteği (veri1) gönder
         if veri1:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": veri1})
+            requests.post(API_URL + "/ziyaretciler", json={"isim": isim1})
             
         # 2. isteği (veri2) gönder
         if veri2:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": veri2})
+            requests.post(API_URL + "/ziyaretciler", json={"isim": isim1})
         
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
