@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Arka uç API'nizin adresi
 API_URL = "https://eren-cloud.onrender.com"
 
-# Tüm HTML içeriği bir değişkende
+# HTML GÜNCELLENDİ: Artık tek bir form ve tek bir buton var.
 HTML = """
 <!doctype html>
 <html>
@@ -15,21 +15,26 @@ HTML = """
     <style>
         body { font-family: Arial; text-align: center; padding: 50px; background: #eef2f3; }
         h1 { color: #333; }
-        input { padding: 10px; font-size: 16px; }
-        button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        li { background: white; margin: 5px auto; width: 200px; padding: 8px; border-radius: 5px; }
+        input { padding: 10px; font-size: 16px; margin: 5px; } /* Dikeyde boşluk eklendi */
+        button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 10px;}
+        li { background: white; margin: 5px auto; width: 200px; padding: 8px; border-radius: 5px; list-style-type: none; }
     </style>
 </head>
 <body>
     <h1>Mikro Hizmetli Selam!</h1>
-    <p>Adını yaz</p>
+    <p>İki alanı da doldur</p>
     
+    <!-- 
+      DEĞİŞİKLİK: 
+      İki formu tek bir formda birleştirdik.
+      Input'lara "isim1" ve "isim2" adlarını verdik.
+      Tek bir buton bıraktık.
+    -->
     <form method="POST">
-        <input type="text" name="isim" placeholder="Adını yaz" required>
-        <button type="submit">Gönder</button>
-    </form>
-     <form method="POST">
-        <input type="text" name="isim" placeholder="Adını yaz" required>
+        <input type="text" name="veri1" placeholder="İlk veriyi yaz" required>
+        <br>
+        <input type="text" name="veri2" placeholder="İkinci veriyi yaz" required>
+        <br>
         <button type="submit">Gönder</button>
     </form>
     
@@ -47,9 +52,19 @@ HTML = """
 def index():
     # Eğer kullanıcı form gönderdiyse (POST)
     if request.method == "POST":
-        isim = request.form.get("isim")
-        # API'nin /ziyaretciler endpoint'ine POST isteği gönder
-        requests.post(API_URL + "/ziyaretciler", json={"isim": isim})
+        # DEĞİŞİKLİK: 
+        # Artık "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
+        veri1 = request.form.get("veri1")
+        veri2 = request.form.get("veri2")
+        
+        # Arka uç (API) sadece "isim" adında tek bir veri kabul ettiği için,
+        # bu iki veriyi birleştirip tek bir metin olarak gönderiyoruz.
+        # Örnek: "Eren" ve "Merhaba" -> "Eren - Merhaba"
+        birlesik_isim = f"{veri1} - {veri2}"
+        
+        # API'nin /ziyaretciler endpoint'ine birleşik veriyi "isim" olarak gönder
+        requests.post(API_URL + "/ziyaretciler", json={"isim": birlesik_isim})
+        
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
 
