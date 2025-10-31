@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Arka uç API'nizin adresi
 API_URL = "https://eren-cloud.onrender.com"
 
-# Tüm HTML içeriği bir değişkende
+# HTML içeriğini güncelledik: İkinci bir form eklendi.
 HTML = """
 <!doctype html>
 <html>
@@ -15,20 +15,74 @@ HTML = """
     <style>
         body { font-family: Arial; text-align: center; padding: 50px; background: #eef2f3; }
         h1 { color: #333; }
-        input { padding: 10px; font-size: 16px; }
-        button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        li { background: white; margin: 5px auto; width: 200px; padding: 8px; border-radius: 5px; }
+        input { padding: 10px; font-size: 16px; margin-bottom: 10px; }
+        button { 
+            padding: 10px 15px; 
+            font-size: 16px;
+            background: #4CAF50; /* Yeşil */
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+        }
+        /* İkinci buton için farklı bir stil */
+        button.blue {
+            background: #008CBA; /* Mavi */
+        }
+        li { 
+            background: white; 
+            margin: 5px auto; 
+            width: 250px; /* Genişliği biraz artırdım */
+            padding: 8px; 
+            border-radius: 5px; 
+            list-style-type: none; /* Madde işaretini kaldırdım */
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin-top: 15px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            width: 50%;
+            margin: 25px auto;
+        }
     </style>
 </head>
 <body>
     <h1>Mikro Hizmetli Selam!</h1>
-    <p>Adını yaz</p>
-    
-    <form method="POST">
-        <input type="text" name="isim" placeholder="Adını yaz" required>
-        <button type="submit">Gönder</button>
-    </form>
-    
+
+    <!-- BİRİNCİ FORM (İsim) -->
+    <div class="form-container">
+        <p>Adını yaz</p>
+        <form method="POST">
+            <input type="text" name="isim" placeholder="Adını yaz" required>
+            <br>
+            <button type="submit">İsmi Gönder</button>
+        </form>
+    </div>
+
+    <!-- İKİNCİ FORM (Mesaj) -->
+    <div class="form-container">
+        <p>Veya bir mesaj bırak</p>
+        <form method="POST">
+            <!-- 
+                Dikkat: Adını "isim" olarak bıraktık. 
+                Böylece arka uç bu veriyi de "isim" olarak alır ve aynı listeye ekler.
+            -->
+            <input type="text" name="isim" placeholder="Mesajını yaz" required>
+            <br>
+            <button type="submit" class="blue">Mesajı Gönder</button>
+        </form>
+    </div>
+
+    <hr>
+
     <h3>Ziyaretçiler:</h3>
     <ul>
         {% for ad in isimler %}
@@ -43,9 +97,13 @@ HTML = """
 def index():
     # Eğer kullanıcı form gönderdiyse (POST)
     if request.method == "POST":
-        isim = request.form.get("isim")
+        # Hangi formdan gelirse gelsin, "isim" alanındaki veriyi alır
+        isim = request.form.get("isim") 
+        
         # API'nin /ziyaretciler endpoint'ine POST isteği gönder
-        requests.post(API_URL + "/ziyaretciler", json={"isim": isim})
+        if isim: # Boş veri göndermeyi engelle (required zaten yapıyor ama çift kontrol)
+            requests.post(API_URL + "/ziyaretciler", json={"isim": isim})
+        
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
 
