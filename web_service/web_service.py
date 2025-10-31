@@ -31,9 +31,9 @@ HTML = """
       Tek bir buton bıraktık.
     -->
     <form method="POST">
-        <input type="text" name="isim1" placeholder="İsmizi Yazınız" required>
+        <input type="text" name="veri1" placeholder="İlk veriyi yaz" required>
         <br>
-        <input type="text" name="isim2" placeholder="Şehrinizi Yazınız" required>
+        <input type="text" name="veri2" placeholder="İkinci veriyi yaz" required>
         <br>
         <button type="submit">Gönder</button>
     </form>
@@ -54,8 +54,8 @@ def index():
     if request.method == "POST":
         # DEĞİŞİKLİK: 
         # "veri1" ve "veri2" olarak adlandırdığımız iki alanı da alıyoruz.
-        veri1 = request.form.get("isim1")
-        veri2 = request.form.get("isim2")
+        veri1 = request.form.get("veri1")
+        veri2 = request.form.get("veri2")
         
         # YENİ MANTIK:
         # Arka uca "isim" olarak iki ayrı istek gönderiyoruz.
@@ -63,11 +63,11 @@ def index():
         
         # 1. isteği (veri1) gönder
         if veri1:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": isim1})
+            requests.post(API_URL + "/ziyaretciler", json={"isim": veri1})
             
         # 2. isteği (veri2) gönder
         if veri2:
-            requests.post(API_URL + "/ziyaretciler", json={"isim": isim1})
+            requests.post(API_URL + "/ziyaretciler", json={"isim": veri2})
         
         # Sayfayı yenilemek için ana sayfaya yönlendir
         return redirect("/")
@@ -81,6 +81,11 @@ def index():
     
     # HTML şablonunu ve isimler listesini kullanarak sayfayı oluştur
     return render_template_string(HTML, isimler=isimler)
+
+if __name__ == "__main__":
+    # Uygulamayı 0.0.0.0 (herkese açık) adresinde ve 5000 portunda çalıştır
+    app.run(host="0.0.0.0", port=5000)
+
 
 if __name__ == "__main__":
     # Uygulamayı 0.0.0.0 (herkese açık) adresinde ve 5000 portunda çalıştır
