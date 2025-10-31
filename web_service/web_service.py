@@ -28,6 +28,10 @@ HTML = """
         <input type="text" name="isim" placeholder="Adını yaz" required>
         <button type="submit">Gönder</button>
     </form>
+     <form method="POST">
+        <input type="text" name="isim" placeholder="Adını yaz" required>
+        <button type="submit">Gönder</button>
+    </form>
     
     <h3>Ziyaretçiler:</h3>
     <ul>
