@@ -9,7 +9,7 @@ CORS(app)
 # Veritabanı URL'sini ortam değişkeninden al veya varsayılanı kullan
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://mauro_cloudsql3_dp_user:mRxhA3XBmFmkKcTgB5B4HoacB0xMekxR@dpg-d425jje3jp1c73abvcj0-a.oregon-postgres.render.com/mauro_cloudsql3_dp"
+    "postgresql://eren:QjlJZEXvH53WCkbTVLEDtoyKXGSAB36y@dpg-d5cmclfgi27c73f6c5l0-a.oregon-postgres.render.com/hello_cloud3_db_361s"
 )
 
 def connect_db():
