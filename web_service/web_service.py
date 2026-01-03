@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # Arka uç API'nizin adresi
-API_URL = "https://eren-cloud.onrender.com"
+API_URL = "https://eren-cloud-1.onrender.com"
 
 # HTML GÜNCELLENDİ: CSS stilleri listeyi alt alta gösterecek şekilde düzeltildi.
 HTML = """
